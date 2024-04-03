@@ -11,18 +11,22 @@ class AnimatedListRoute extends StatefulWidget {
   const AnimatedListRoute({super.key});
   static const routeName = '/';
   @override
-  // ignore: library_private_types_in_public_api
-  _AnimatedListRouteState createState() => _AnimatedListRouteState();
+  State<AnimatedListRoute> createState() => _AnimatedListRouteState();
 }
 
 class _AnimatedListRouteState extends State<AnimatedListRoute> {
   final globalKey = GlobalKey<AnimatedListState>();
 
   final List<Item> items = [
-    const Item(1, "啊——麦克风测试，麦克风测试！", "粉_B02_A01_铃羽_微笑.png", ['程序', '镜头', '文本']),
-    const Item(2, "这个声音是，铃……小姐？", "粉_B01_A01_心弥_平常.png", ['文本']),
-    const Item(3, "线路接上了，把竹内绚音的数据转移出来需要3分钟，你们的通话时间也只有这么长。",
-        "粉_B01_A01_心弥_平常.png", ['文本'])
+    Item.withParam(
+        id: 1, text: "啊——麦克风测试，麦克风测试！", icon: "粉_B02_A01_铃羽_微笑.png", tag: '程序'),
+    Item.withParam(
+        id: 2, text: "这个声音是，铃……小姐？", icon: "粉_B01_A01_心弥_平常.png", tag: '文本'),
+    Item.withParam(
+        id: 3,
+        text: "线路接上了，把竹内绚音的数据转移出来需要3分钟，你们的通话时间也只有这么长。",
+        icon: "粉_B01_A01_心弥_平常.png",
+        tag: '文本')
   ];
 
   int counter = 3;
@@ -36,21 +40,12 @@ class _AnimatedListRouteState extends State<AnimatedListRoute> {
             IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
-                // Navigate to the settings page. If the user leaves and returns
-                // to the app after it has been killed while running in the
-                // background, the navigation stack is restored.
+                // 受理并载入设置界面
                 Navigator.restorablePushNamed(context, SettingsView.routeName);
               },
             ),
           ],
         ),
-
-        // To work with lists that may contain a large number of items, it’s best
-        // to use the ListView.builder constructor.
-        //
-        // In contrast to the default ListView constructor, which requires
-        // building all Widgets up front, the ListView.builder constructor lazily
-        // builds Widgets as they’re scrolled into view.
         body: AnimatedList(
           key: globalKey,
           initialItemCount: items.length,
@@ -65,7 +60,7 @@ class _AnimatedListRouteState extends State<AnimatedListRoute> {
             );
           },
         ),
-        floatingActionButton: buildAddBtn(items, counter, globalKey) //添加item
+        floatingActionButton: buildAddBtn(items, counter, globalKey) //添加item的按钮
         );
   }
 }

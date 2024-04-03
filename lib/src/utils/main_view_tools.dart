@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 import '../feature/item.dart';
-import '../feature/item_details_view.dart';
+import '../feature/item_details.dart';
 
 // 创建一个 “+” 按钮，点击后会向列表中插入一项
 Widget buildAddBtn(List<Item> items, int counter, globalKey) {
@@ -14,7 +14,7 @@ Widget buildAddBtn(List<Item> items, int counter, globalKey) {
       child: const Icon(Icons.add),
       onPressed: () {
         items.add(
-          Item(++counter, "这个声音是，铃……小姐？", "粉_B01_A01_心弥_平常.png", ['文本']),
+          Item.withParam(id: ++counter),
         );
         // 告诉列表项有新添加的列表项
         globalKey.currentState!.insertItem(items.length - 1);
@@ -32,16 +32,16 @@ Widget buildItem(context, index, List<Item> items, globalKey) {
       item.text,
       style: const TextStyle(fontSize: 20),
     ),
-    subtitle: colorTag(item.tagLst),
+    subtitle: colorTag(item.tag),
     leading: CircleAvatar(
       // 文本头像
       foregroundImage: AssetImage('assets/images/${item.icon}'),
     ),
     onTap: () {
-      Navigator.restorablePushNamed(
-        context,
-        ItemDetailsView.routeName,
-      );
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ItemDetails(item: item))); // 点击进入详情
     },
     trailing: IconButton(
       icon: const Icon(Icons.delete),
@@ -51,26 +51,21 @@ Widget buildItem(context, index, List<Item> items, globalKey) {
 }
 
 // 彩色标签内容
-Widget colorTag(List<String> tagLst) {
-  final random = Random(100);
-  return Wrap(
-    spacing: 4.0, // 间距
-    children: tagLst.map((tag) {
-      return SizedBox(
-        width: 60.0, // 自定义宽度
-        height: 30.0, // 自定义高度
-        child: Chip(
-          label: Text(tag),
-          backgroundColor: Color.fromRGBO(
-            random.nextInt(256),
-            random.nextInt(256),
-            random.nextInt(256),
-            1,
-          ),
-          labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
-        ),
-      );
-    }).toList(),
+Widget colorTag(String tag) {
+  final random = Random(2010);
+  return SizedBox(
+    width: 60.0, // 自定义宽度
+    height: 30.0, // 自定义高度
+    child: Chip(
+      label: Text(tag),
+      backgroundColor: Color.fromRGBO(
+        random.nextInt(256),
+        random.nextInt(256),
+        random.nextInt(256),
+        1,
+      ),
+      labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
+    ),
   );
 }
 

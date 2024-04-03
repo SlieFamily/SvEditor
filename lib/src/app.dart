@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'feature/item_details_view.dart';
+// import 'feature/item_details_view.dart';
 import 'feature/item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
-/// The Widget that configures your application.
 class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
@@ -18,10 +17,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Glue the SettingsController to the MaterialApp.
-    //
-    // The ListenableBuilder Widget listens to the SettingsController for changes.
-    // Whenever the user updates their settings, the MaterialApp is rebuilt.
     // 当 setting 被用户更改时会被系统监听到并根据配置rebuild整个app
     return ListenableBuilder(
       listenable: settingsController,
@@ -33,9 +28,6 @@ class MyApp extends StatelessWidget {
           // background.
           restorationScopeId: 'app',
 
-          // Provide the generated AppLocalizations to the MaterialApp. This
-          // allows descendant Widgets to display the correct translations
-          // depending on the user's locale.
           // 本地化，即实现系统语言的自适应
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -72,9 +64,6 @@ class MyApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
-                  case ItemDetailsView.routeName:
-                    return const ItemDetailsView();
-                  case AnimatedListRoute.routeName:
                   default:
                     return const AnimatedListRoute();
                 }
